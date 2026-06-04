@@ -1,0 +1,19 @@
+# Apache configuration for Next.js Static Export (out folder)
+# Place this file in public/.htaccess so it gets copied to the out folder on build.
+
+# 1. Enable Mod_Rewrite
+RewriteEngine On
+
+# 2. Redirect trailing slashes to non-trailing slash URLs (except for directories)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+
+# 3. Serve the HTML page if the file with a .html extension exists
+# e.g., mapping /menu to /menu.html internally
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 4. Handle custom 404 error page
+ErrorDocument 404 /404.html
