@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HeroSlider from "./HeroSlider";
 
 const marqueeItems = [
   "Authentic Flavors",
@@ -41,47 +42,7 @@ export default function Hero() {
           </div>
         </div>
 
-          <div className="flex items-end justify-center w-full max-w-[420px] tablet:max-w-[800px] pt-[100px] -mb-50 desktop:max-w-[1200px] mx-auto pt-10 pb-12 ">
-  {/* Left Image */}
-  <div className="z-[1] origin-bottom-right -rotate-[7deg] transition-all duration-300 hover:-rotate-[3deg] hover:scale-105">
-    <Image
-      src="/fadis_bites_hero_1.png"
-      alt="Fadi's Bites Samosas Packaging"
-      width={972}
-      height={1280}
-      className="h-auto w-[180px] tablet:w-[320px] desktop:w-[500px] object-contain drop-shadow-[15px_30px_35px_rgba(0,0,0,0.3)]"
-      draggable={false}
-      priority
-    />
-  </div>
-
-  {/* Center Image */}
-  {/* -mx-10 pulls the side images slightly behind it for that layered fan effect */}
-  <div className="z-[2] origin-bottom transition-all duration-300 hover:scale-105 -mx-10 tablet:-mx-20 desktop:-mx-28">
-    <Image
-      src="/fadis_bites_hero_2.png"
-      alt="Fadi's Bites Spring Rolls Packaging"
-      width={972}
-      height={1280}
-      className="h-auto w-[220px] tablet:w-[380px] desktop:w-[580px] object-contain drop-shadow-[24px_48px_51px_rgba(0,0,0,0.25)]"
-      draggable={false}
-      priority
-    />
-  </div>
-
-  {/* Right Image */}
-  <div className="z-[1] origin-bottom-left rotate-[7deg] transition-all duration-300 hover:rotate-[3deg] hover:scale-105">
-    <Image
-      src="/fadis_bites_hero_3.png"
-      alt="Fadi's Bites Kebabs Packaging"
-      width={972}
-      height={1280}
-      className="h-auto w-[180px] tablet:w-[320px] desktop:w-[500px] object-contain drop-shadow-[15px_30px_35px_rgba(0,0,0,0.3)]"
-      draggable={false}
-      priority
-    />
-  </div>
-</div>
+        <HeroSlider />
       </div>
 
       <div className="relative z-10 mt-0 w-full overflow-hidden border-y border-green-border bg-beige py-3">
