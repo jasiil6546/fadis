@@ -14,14 +14,14 @@ const marqueeItems = [
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative -mt-[0px] overflow-hidden bg-green pt-[180px] ">
-      <div className="container-custom flex flex-col items-center gap-1">
+    <section id="hero" className="relative -mt-[0px] overflow-hidden bg-green pt-[120px] md:pt-[180px] min-h-[100svh] flex flex-col justify-between">
+      <div className="container-custom flex flex-col items-center gap-1 flex-1">
         <div className="flex w-full max-w-[550px] flex-col items-center gap-5 text-center">
           <div className="flex flex-col items-center gap-5 ">
-            <h1 className="font-display font-extrabold h1 leading-[0.9] tracking-normal text-beige-light">
+            <h1 className="font-display text-[38px] md:text-[64px] lg:text-[80px] desktop:text-[100px] font-extrabold leading-[0.9] tracking-normal text-beige-light px-2">
               Taste That Hits Different
             </h1>
-            <p className="max-w-full font-body sub-hero-pera text-beige-light">
+            <p className="max-w-full text-[18px] md:text-[22px] font-body leading-[1.3] text-beige-light px-4">
               Fadi&apos;s Bites makes ready-to-cook snacks with real flavors for quick, tasty moments.
             </p>
           </div>
