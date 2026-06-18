@@ -26,12 +26,59 @@ const products = [
     title: "Kebabs",
     description: "Spiced to perfection with traditional recipes.",
   },
+    {
+    id: 4,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
+    {
+    id: 5,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
+      {
+    id: 6,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
+      {
+    id: 7,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
+      {
+    id: 8,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
+      {
+    id: 9,
+    src: "/fadis_bites_hero_2.png",
+    alt: "Fadi's Bites Spring Rolls Packaging",
+    title: "Spring Rolls",
+    description: "Authentic crunch and savory delight in every bite.",
+  },
 ];
 
 export default function HeroSlider() {
   const [currentIndex, setCurrentIndex] = useState(1); // Start with center image
   const [isZoomed, setIsZoomed] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   // If zoomed in, we can use arrows to navigate
   useEffect(() => {
@@ -56,38 +103,30 @@ export default function HeroSlider() {
 
   return (
     <div 
-      className={`relative w-full transition-all duration-700 ease-in-out ${isZoomed ? "h-[80vh] flex items-center justify-center fixed inset-0 z-50 bg-green/95 backdrop-blur-md" : "flex items-end justify-center max-w-[420px] tablet:max-w-[800px] pt-[100px] -mb-50 desktop:max-w-[1200px] mx-auto pt-10 pb-12"}`}
+      className={`relative w-full transition-all duration-700 ease-in-out ${isZoomed ? "fixed inset-0 z-50 bg-beige/95 backdrop-blur-sm" : "flex items-end justify-center max-w-[420px] tablet:max-w-[800px] pt-[100px] -mb-50 desktop:max-w-[1200px] mx-auto pt-10 pb-12"}`}
       ref={containerRef}
       onClick={() => isZoomed && setIsZoomed(false)}
     >
+      {/* Invisible dummy to maintain container height */}
+      {!isZoomed && (
+        <div className="pointer-events-none opacity-0 w-[220px] tablet:w-[380px] desktop:w-[580px]">
+          <Image src={products[0].src} width={972} height={1280} alt="" className="w-full h-auto" priority />
+        </div>
+      )}
+
       {products.map((product, index) => {
         const isCenter = currentIndex === index;
         const isLeft = (currentIndex - 1 + products.length) % products.length === index;
         const isRight = (currentIndex + 1) % products.length === index;
         
-        let positionClass = "";
         let zIndex = 0;
-        let transformStyle = "";
 
         if (isZoomed) {
-          // Slideshow layout
           zIndex = isCenter ? 20 : 10;
-          if (isCenter) transformStyle = "translateX(0) scale(1.2)";
-          else if (isLeft) transformStyle = "translateX(-80%) scale(0.8) opacity(0.5)";
-          else if (isRight) transformStyle = "translateX(80%) scale(0.8) opacity(0.5)";
-          else transformStyle = "translateX(0) scale(0) opacity(0)";
         } else {
-          // Clustered fan layout
-          if (index === 0) {
-            zIndex = 1;
-            transformStyle = "translateX(20%) rotate(-7deg) scale(0.9)";
-          } else if (index === 1) {
-            zIndex = 2;
-            transformStyle = "translateX(0) rotate(0deg) scale(1)";
-          } else if (index === 2) {
-            zIndex = 1;
-            transformStyle = "translateX(-20%) rotate(7deg) scale(0.9)";
-          }
+          if (isLeft) zIndex = 1;
+          else if (isCenter) zIndex = 2;
+          else if (isRight) zIndex = 1;
         }
 
         return (
@@ -103,34 +142,41 @@ export default function HeroSlider() {
                 setCurrentIndex(index);
               }
             }}
-            initial={false}
+            initial={{ 
+              opacity: 0, 
+              y: 100, 
+              scale: 0.8,
+              rotate: index === 0 ? -15 : index === 2 ? 15 : 0,
+              x: "-50%"
+            }}
             animate={{
               zIndex: zIndex,
-              scale: isZoomed ? (isCenter ? 1.1 : 0.8) : (index === 1 ? 1 : 0.85),
-              rotate: !isZoomed ? (index === 0 ? -7 : index === 2 ? 7 : 0) : 0,
-              x: isZoomed ? (isCenter ? 0 : isLeft ? "-60%" : isRight ? "60%" : "0") : (index === 0 ? "10%" : index === 2 ? "-10%" : "0"),
-              y: isZoomed ? (isCenter ? 0 : 40) : (index === 1 ? 0 : 30),
-              opacity: isZoomed && !isCenter && !isLeft && !isRight ? 0 : 1,
+              scale: isZoomed ? (isCenter ? 1.1 : 0.75) : (isCenter ? 1.05 : 0.85),
+              rotate: !isZoomed ? (isLeft ? -15 : isRight ? 15 : 0) : 0,
+              x: isZoomed ? (isCenter ? "-50%" : isLeft ? "-160%" : isRight ? "60%" : "-50%") : (isCenter ? "-50%" : isLeft ? "-130%" : isRight ? "30%" : "-50%"),
+              y: isZoomed ? "-50%" : (isCenter ? -20 : 30),
+              opacity: isZoomed ? (isCenter || isLeft || isRight ? 1 : 0) : (isCenter || isLeft || isRight ? 1 : 0),
             }}
             transition={{
               type: "spring",
-              stiffness: 200,
-              damping: 25,
-              mass: 1.2
+              stiffness: 180,
+              damping: 20,
+              mass: 1.2,
+              delay: !hasMounted ? index * 0.15 : 0
             }}
-            whileHover={!isZoomed ? { scale: index === 1 ? 1.05 : 0.9, y: -10 } : {}}
-            className={`absolute cursor-pointer origin-bottom ${isZoomed ? "top-1/2 -mt-[250px]" : "relative"}`}
+            whileHover={!isZoomed ? { scale: isCenter ? 1.1 : 0.9, y: isCenter ? -25 : 15 } : {}}
+            className={`absolute cursor-pointer ${isZoomed ? "top-1/2 left-1/2 origin-center" : "bottom-12 left-1/2 origin-bottom"}`}
             style={{
-              width: "auto" // container width handled by next/image or parent
+              width: "auto"
             }}
-          >
-            <div className={`relative ${isZoomed ? (isCenter ? "w-[300px] tablet:w-[450px] desktop:w-[600px]" : "w-[250px] tablet:w-[350px] desktop:w-[400px]") : (index === 1 ? "w-[220px] tablet:w-[380px] desktop:w-[580px] z-10" : "w-[180px] tablet:w-[320px] desktop:w-[500px] -mx-10 tablet:-mx-20 desktop:-mx-28")}`}>
+          > 
+            <div className={`relative ${isZoomed ? (isCenter ? "w-[300px] tablet:w-[450px] desktop:w-[500px]" : "w-[200px] tablet:w-[300px] desktop:w-[350px]") : (isCenter ? "w-[220px] tablet:w-[380px] desktop:w-[580px] z-10" : "w-[180px] tablet:w-[320px] desktop:w-[500px]")}`}>
               <Image
                 src={product.src}
                 alt={product.alt}
                 width={972}
                 height={1280}
-                className="w-full h-auto object-contain drop-shadow-[24px_48px_51px_rgba(0,0,0,0.25)]"
+                className={`w-full h-auto object-contain drop-shadow-[24px_48px_51px_rgba(0,0,0,0.25)] transition-opacity duration-500 ${isZoomed && !isCenter ? 'opacity-40 hover:opacity-80' : ''}`}
                 draggable={false}
                 priority
               />
@@ -140,14 +186,14 @@ export default function HeroSlider() {
             <AnimatePresence>
               {isZoomed && isCenter && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.2 }}
-                  className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-max text-center bg-beige-light p-4 rounded-xl shadow-xl pointer-events-none"
+                  exit={{ opacity: 0, y: 15 }}
+                  transition={{ delay: 0.1 }}
+                  className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-max text-center pointer-events-none"
                 >
-                  <h3 className="font-display font-bold text-2xl text-green">{product.title}</h3>
-                  <p className="font-body text-green-dark/80 text-sm">{product.description}</p>
+                  <h3 className="font-display font-bold text-3xl text-green drop-shadow-sm">{product.title}</h3>
+                  <p className="font-body text-green/80 text-base mt-2 drop-shadow-sm">{product.description}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -163,9 +209,9 @@ export default function HeroSlider() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsZoomed(false)}
-            className="absolute top-10 right-10 bg-beige-light text-green rounded-full p-3 shadow-lg hover:scale-105 transition-transform"
+            className="absolute top-10 right-10 text-green/60 hover:text-green p-3 transition-colors"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
